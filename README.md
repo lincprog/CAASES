@@ -61,11 +61,10 @@ In the example above, ASES identified 10 errors in the markup category and, for 
 
 ## Installation
 
-Crawler-ASES can be installed directly from the source using the following commands
+CAASES can be installed directly from the source using the following commands
 
 ```bash
-git clone https://github.com/gustaph/crawler-ases.git
-cd crawler-ases
+git clone https://github.com/lincprog/CAASES.git
 pip install -r requirements.txt
 ```
 
@@ -88,7 +87,7 @@ The project structure is defined as follows:
  ┗ 📜web_crawler_ases.ipynb
  ```
 
-In the web_crawler_ases.ipynb file, in the section 1. Parameter Configuration, define the URLs to be processed in the indicated field:
+In the `web_crawler_ases.ipynb` file, in the section `1. Parameter Configuration`, define the URLs to be processed in the indicated field:
 
 ```python
 # Insert the list of URLs to be processed:
