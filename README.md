@@ -22,7 +22,7 @@ The accessibility summary based on [eMAG](https://emag.governoeletronico.gov.br/
 
 | Variable              | Description              | Dtype   |
 |-----------------------|--------------------------|---------|
-| `url`                 | URL of the web page	 | STRING  |
+| `url`                 | URL of the web page	 | string |
 | `ases_pct`            | Web page accessibility percentage | float |
 | `n_markup_errors`     | Number of markup errors on the page | integer |
 | `n_behavior_errors`   | Number of behavior errors on the page | integer |
@@ -59,7 +59,7 @@ pip install -r requirements.txt
 
 The project structure is defined as follows:
 ```
-📦crawler-docker
+📦CAASES
  ┣ 📂data  (data collected by the crawler. It includes the data explained above)
  ┃ ┣ 📜emag_summary.csv
  ┃ ┣ 📜err_warn_summary.csv
