@@ -1,65 +1,54 @@
-
 # **CAASES**
 
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Pandas)](https://www.python.org/downloads/)  [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://www.gnu.org/licenses/mit)  
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Selenium)](https://www.python.org/downloads/)  [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://www.gnu.org/licenses/mit)
 
 CAASES is a web crawler created for extracting accessibility information from websites through the [Avaliador e Simulador de Acessibilidade em Sítios (ASES)](https://asesweb.governoeletronico.gov.br/)
 
 The collected information includes:
 
-## ASES Percentage
+## Page Info
 
-Initial evaluation of the page: URL, page size in bytes, and the accessibility percentage, ranging from 0 to 100%.
+|    Variable         | Description | Dtype |
+|---------------------|-------------|-------|
+| `url`               | URL of the web page	 | string |
+| `name`              | The title of the web page | string |
+| `size_bytes`        | The size of the page's HTML file in bytes | float |
+| `with_html`         | Indicates whether information was collected from the HTML file or the URL | boolean |
+| `num_lines_of_code` | The number of lines of code in the web page | integer |
 
-```json
-{
-  "url": "https://www.example.com/",
-  "size": "1000",
-  "perc_ases": "80.0%"
-}
-```
-
-## Accessibility Summary (eMAG) - General
+## Errors/Warnings Summary
 
 The accessibility summary based on [eMAG](https://emag.governoeletronico.gov.br/) recommendations presents errors and warnings for six evaluation sections: **markup**, **behavior**, **content/information**, **presentation/design**, **multimedia** and **forms**.
 
-```json
-{
-  "errors_behavior": 0,
-  "errors_forms": 0,
-  "errors_information": 32,
-  "errors_markup": 19,
-  "errors_multimedia": 0,
-  "errors_presentation": 1,
-  "errors_total": 52,
-  "warnings_behavior": 4,
-  "warnings_forms": 0,
-  "warnings_information": 35,
-  "warnings_markup": 213,
-  "warnings_multimedia": 2,
-  "warnings_presentation": 0,
-  "warnings_total": 254,
-  "url": "https://www.example.com/"
-}
-```
+| Variable              | Description              | Dtype   |
+|-----------------------|--------------------------|---------|
+| `url`                 | URL of the web page	 | STRING  |
+| `ases_pct`            | Web page accessibility percentage | float |
+| `n_markup_errors`     | Number of markup errors on the page | integer |
+| `n_behavior_errors`   | Number of behavior errors on the page | integer |
+| `n_information_errors`| Number of information errors on the page | integer |
+| `n_presentation_errors`| Number of presentation errors on the page | integer |
+| `n_multimedia_errors` | Number of multimedia errors on the page | integer |
+| `n_form_errors`       | Number of form errors on the page | integer |
+| `n_markup_warnings`   | Number of markup warnings on the page | integer |
+| `n_behavior_warnings` | Number of behavior warnings on the page | integer |
+| `n_information_warnings`| Number of information warnings on the page | integer |
+| `n_presentation_warnings`| Number of presentation warnings on the page | integer |
+| `n_multimedia_warnings` | Number of multimedia warnings on the page | integer |
+| `n_form_warnings`     | Number of form warnings on the page | integer |
 
-## Accessibility Summary (eMAG) - Specific
+## Errors/Warnings eMAG
 
-For each error and warning in the sections above, ASES provides a recommendation based on eMAG. Possible indices for recommendations are defined on the eMAG website, the type can take values `["ERROR", "WARNING"]`, and the category can be `["MARK", "BEHAVIOR", "INFORMATION", "PRESENTATION", "MULTIMEDIA", "FORM"]`.
+| Variable           | Description       | Dtype       |
+|--------------------|-------------------|-------------|
+| `url`              | URL of the web page	 | string |
+| `category`         | Category of the content (`mark`, `behavior`, `information`, `presentation`, `multimedia`, `form`) | string |
+| `info_type`        | Type of information (`error` or `warning`) | string |
+| `recommendation`   | eMAG recommendation | string |
+| `count`            | Quantity of recommendations | integer |
+| `source_code_lines`| Lines of code to which the recommendation applies | list(string) |
 
-```json
-{
-  "recommendation": "1.2",
-  "quantity": 10,
-  "category": "MARK",
-  "type": "ERROR",
-  "url": "https://www.example.com/"
-}
-```
-
-In the example above, ASES identified 10 errors in the markup category and, for these, makes the recommendation [Recomendação 1.2 – Organizar o código HTML de forma lógica e semântica](https://emag.governoeletronico.gov.br/#:~:text=Recomenda%C3%A7%C3%A3o%201.2%20%E2%80%93%20Organizar%20o%20c%C3%B3digo%20HTML%20de%20forma%20l%C3%B3gica%20e%20sem%C3%A2ntica)
-
-## Installation
+## Installation & File Tree
 
 CAASES can be installed directly from the source using the following commands
 
@@ -68,34 +57,63 @@ git clone https://github.com/lincprog/CAASES.git
 pip install -r requirements.txt
 ```
 
-## Usage/Examples
-
 The project structure is defined as follows:
-
-```batch
-📦ases-crawler
- ┣ 📂data  # data collected by the crawler
- ┃ ┣ 📜ases.parquet
- ┃ ┣ 📜errors_warnings.parquet
- ┃ ┗ 📜accessibility_summary.parquet
- ┣ 📂logs
- ┣ 📂temp
- ┃ ┗ 📜site.html
+```
+📦crawler-docker
+ ┣ 📂data  (data collected by the crawler. It includes the data explained above)
+ ┃ ┣ 📜emag_summary.csv
+ ┃ ┣ 📜err_warn_summary.csv
+ ┃ ┗ 📜page_info.csv
+ ┣ 📂html_files  (store HTML files downloaded by the crawler)
+ ┣ 📂logs  (store log files generated by the crawler)
+ ┣ 📜broken_urls.txt  (contains a list of broken URLs encountered during execution)
+ ┣ 📜docker-compose.yml (Docker Compose configuration file)
+ ┣ 📜main.py  (executing the crawling process)
+ ┣ 📜models.py  (definitions for structures used for data collection)
  ┣ 📜README.md
- ┣ 📜requirements.txt  # dependencies
- ┣ 📜utils.py   # utility functions used in the notebook
- ┗ 📜web_crawler_ases.ipynb
- ```
-
-In the `web_crawler_ases.ipynb` file, in the section `1. Parameter Configuration`, define the URLs to be processed in the indicated field:
-
-```python
-# Insert the list of URLs to be processed:
-urls: list[str] = ["https://www.site1.com/", "https://www.site2.com/"]
+ ┣ 📜requirements.txt  (dependencies required for the project)
+ ┣ 📜urls.txt  (a list of URLs to be processed by the crawler)
+ ┗ 📜utils.py  (utility functions and helper methods used throughout the project)
 ```
 
-Finally, to start the processing, in section `2.1. Extraction, Processing, and Storage`, execute the cell
+## Usage
 
-```python
-pipeline.process()
+**Please, ensure [Docker](https://www.docker.com/products/docker-desktop/) is installed on your system.**
+
+1. Navigate to the directory containing the `docker-compose.yaml` file.
+2. Open a terminal window.
+4. Run the command below to start the Docker containers defined in the docker-compose.yaml file
+```bash
+docker-compose up -d
+```
+5. Once the containers are running, navigate to the directory containing the **main\.py** file.
+6. Execute the **main\.py** file using the appropriate command for your Python environment
+```bash
+python main.py
+```
+
+Optionally, to monitor the execution in the Selenium Grid, you can access the URL in your browser at http://localhost:4444.
+
+## Flowchart
+
+```mermaid
+---
+title: Extraction Process Flowchart for a URL
+---
+flowchart LR
+    A([open driver]) --> B[insert URL];
+    B --> D{check ok};
+    D --> |Yes| E1[parse];
+    E1 --> F0[get data];
+    F0 --> F1[store data];
+    F1 --> Q[quite driver];
+
+    D --> |No| E2[retrieve html file];
+    E2 --> F2[insert HTML file];
+    F2 --> G{check ok};
+    G --> |Yes| E1;
+    G --> |No| H[save broken url];
+    H --> Q;
+
+    Q --> R([return data]);
 ```
