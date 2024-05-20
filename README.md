@@ -94,26 +94,8 @@ python main.py
 
 Optionally, to monitor the execution in the Selenium Grid, you can access the URL in your browser at http://localhost:4444.
 
-## Flowchart
+## CAASES in action
 
-```mermaid
----
-title: Extraction Process Flowchart for a URL
----
-flowchart LR
-    A([open driver]) --> B[insert URL];
-    B --> D{check ok};
-    D --> |Yes| E1[parse];
-    E1 --> F0[get data];
-    F0 --> F1[store data];
-    F1 --> Q[quite driver];
+The following works use CAASES:
 
-    D --> |No| E2[retrieve html file];
-    E2 --> F2[insert HTML file];
-    F2 --> G{check ok};
-    G --> |Yes| E1;
-    G --> |No| H[save broken url];
-    H --> Q;
-
-    Q --> R([return data]);
-```
+- Marcos, C. O., Gustavo, S. S., & Antonio, F. L. J. J. (2024). Dados da avaliação de acessibilidade Web nos portais das Instituições de Ensino Superior no Brasil [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10612128
