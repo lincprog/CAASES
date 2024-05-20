@@ -57,6 +57,9 @@ def get_html(url: str) -> tuple[HTMLParser | None, str]:
     WebDriverWait(driver, timeout=2).until(
         ec.presence_of_element_located((By.CSS_SELECTOR, "div.containerTab"))
     )
+    
+    if url == "":
+        return None, url
 
     try:
         insert_data(driver, "input#url", "input#input_tab_1.submit", url)
@@ -266,11 +269,12 @@ def main() -> None:
         if target == "broken_urls.txt":
             open(target, "w").close()
 
-        with ThreadPoolExecutor(max_workers=Config.MAX_WORKERS) as executor:
-            results = list(executor.map(get_html, urls))
+        if urls:    
+            with ThreadPoolExecutor(max_workers=Config.MAX_WORKERS) as executor:
+                results = list(executor.map(get_html, urls))
 
-        for tree, url in results:
-            run(tree, url)
+            for tree, url in results:
+                run(tree, url)
 
         logging.info(f"[{target}] Finished processing all URLs.")
 
